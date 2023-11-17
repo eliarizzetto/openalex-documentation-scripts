@@ -5,7 +5,7 @@ import json
 import os
 
 SNAPSHOT_DIR = 'openalex-snapshot'
-CSV_DIR = 'mm-full-records-csv-files'
+CSV_DIR = 'csv-files'
 
 FILES_PER_ENTITY = int(os.environ.get('OPENALEX_DEMO_FILES_PER_ENTITY', '0'))
 
@@ -465,13 +465,7 @@ def flatten_publishers():
                 break
 
 
-def flatten_sources(inp_dir: str):
-    """
-    Modified to read non-compressed (.part) files in a flat directory, instead of compressed files in a directory tree.
-    :param inp_dir: the directory storing the file to be flattened (used for inserting multi-mapped OpenAlex full
-    records into a relational database).
-    :return:
-    """
+def flatten_sources():
     with gzip.open(csv_files['sources']['sources']['name'], 'wt', encoding='utf-8') as sources_csv, \
             gzip.open(csv_files['sources']['ids']['name'], 'wt', encoding='utf-8') as ids_csv, \
             gzip.open(csv_files['sources']['counts_by_year']['name'], 'wt', encoding='utf-8') as counts_by_year_csv:
@@ -490,9 +484,9 @@ def flatten_sources(inp_dir: str):
         seen_source_ids = set()
 
         files_done = 0
-        for jsonl_file_name in glob.glob(os.path.join(inp_dir, '*.part')): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in glob.glob(os.path.join(SNAPSHOT_DIR, 'data', 'sources', '*', '*.gz')):
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r') as sources_jsonl:
+            with gzip.open(jsonl_file_name, 'r') as sources_jsonl:
                 for source_json in sources_jsonl:
                     if not source_json.strip():
                         continue
@@ -522,13 +516,7 @@ def flatten_sources(inp_dir: str):
                 break
 
 
-def flatten_works(inp_dir: str):
-    """
-    Modified to read non-compressed (.part) files in a flat directory, instead of compressed files in a directory tree.
-    :param inp_dir: the directory storing the file to be flattened (used for inserting multi-mapped OpenAlex full
-    records into a relational database).
-    :return:
-    """
+def flatten_works():
     file_spec = csv_files['works']
 
     with gzip.open(file_spec['works']['name'], 'wt', encoding='utf-8') as works_csv, \
@@ -558,9 +546,9 @@ def flatten_works(inp_dir: str):
         related_works_writer = init_dict_writer(related_works_csv, file_spec['related_works'])
 
         files_done = 0
-        for jsonl_file_name in glob.glob(os.path.join(inp_dir, '*.part')): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in glob.glob(os.path.join(SNAPSHOT_DIR, 'data', 'works', '*', '*.gz')):
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r') as works_jsonl:
+            with gzip.open(jsonl_file_name, 'r') as works_jsonl:
                 for work_json in works_jsonl:
                     if not work_json.strip():
                         continue
@@ -691,16 +679,11 @@ def init_dict_writer(csv_file, file_spec, **kwargs):
     writer.writeheader()
     return writer
 
-def get_files_to_flatten(in_dir:str):
-    for file in os.listdir(in_dir):
-        yield os.path.join(in_dir, file)
-
 
 if __name__ == '__main__':
-    # flatten_authors()
-    # flatten_concepts()
-    # flatten_institutions()
-    # flatten_publishers()
-    CSV_DIR = os.path.join('E:/multi_mapped_full_metadata', CSV_DIR) # replace with the directory where you want to store the flattened files
-    flatten_sources('E:/multi_mapped_full_metadata/sources')
-    flatten_works('E:/multi_mapped_full_metadata/works')
+    flatten_authors()
+    flatten_concepts()
+    flatten_institutions()
+    flatten_publishers()
+    flatten_sources()
+    flatten_works()
