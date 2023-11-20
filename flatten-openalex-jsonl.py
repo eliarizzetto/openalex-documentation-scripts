@@ -3,9 +3,12 @@ import glob
 import gzip
 import json
 import os
+from tqdm import tqdm
 
 SNAPSHOT_DIR = 'openalex-snapshot'
-CSV_DIR = 'mm-full-records-csv-files'
+
+CSV_DIR = os.path.join('E:', 'multi_mapped_full_metadata', 'mm-full-records-csv-files')  # replace with the directory where you want to store the flattened files
+os.makedirs(CSV_DIR, exist_ok=True)
 
 FILES_PER_ENTITY = int(os.environ.get('OPENALEX_DEMO_FILES_PER_ENTITY', '0'))
 
@@ -490,7 +493,7 @@ def flatten_sources(inp_dir: str):
         seen_source_ids = set()
 
         files_done = 0
-        for jsonl_file_name in glob.glob(os.path.join(inp_dir, '*.part')): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
             print(jsonl_file_name)
             with open(jsonl_file_name, 'r') as sources_jsonl:
                 for source_json in sources_jsonl:
@@ -558,7 +561,7 @@ def flatten_works(inp_dir: str):
         related_works_writer = init_dict_writer(related_works_csv, file_spec['related_works'])
 
         files_done = 0
-        for jsonl_file_name in glob.glob(os.path.join(inp_dir, '*.part')): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
             print(jsonl_file_name)
             with open(jsonl_file_name, 'r') as works_jsonl:
                 for work_json in works_jsonl:
@@ -701,6 +704,6 @@ if __name__ == '__main__':
     # flatten_concepts()
     # flatten_institutions()
     # flatten_publishers()
-    CSV_DIR = os.path.join('E:/multi_mapped_full_metadata', CSV_DIR) # replace with the directory where you want to store the flattened files
+
     flatten_sources('E:/multi_mapped_full_metadata/sources')
     flatten_works('E:/multi_mapped_full_metadata/works')
