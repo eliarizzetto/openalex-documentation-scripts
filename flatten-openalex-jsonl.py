@@ -113,91 +113,91 @@ csv_files = {
     },
     'sources': {
         'sources': {
-            'name': os.path.join(CSV_DIR, 'sources.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'sources.csv'),
             'columns': [
                 'id', 'issn_l', 'issn', 'display_name', 'publisher', 'works_count', 'cited_by_count', 'is_oa',
                 'is_in_doaj', 'homepage_url', 'works_api_url', 'updated_date'
             ]
         },
         'ids': {
-            'name': os.path.join(CSV_DIR, 'sources_ids.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'sources_ids.csv'),
             'columns': ['source_id', 'openalex', 'issn_l', 'issn', 'mag', 'wikidata', 'fatcat']
         },
         'counts_by_year': {
-            'name': os.path.join(CSV_DIR, 'sources_counts_by_year.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'sources_counts_by_year.csv'),
             'columns': ['source_id', 'year', 'works_count', 'cited_by_count', 'oa_works_count']
         },
     },
     'works': {
         'works': {
-            'name': os.path.join(CSV_DIR, 'works.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works.csv'),
             'columns': [
                 'id', 'doi', 'title', 'display_name', 'publication_year', 'publication_date', 'type', 'cited_by_count',
                 'is_retracted', 'is_paratext', 'cited_by_api_url', 'abstract_inverted_index','language'
             ]
         },
         'primary_locations': {
-            'name': os.path.join(CSV_DIR, 'works_primary_locations.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_primary_locations.csv'),
             'columns': [
                 'work_id', 'source_id', 'landing_page_url', 'pdf_url', 'is_oa', 'version', 'license'
             ]
         },
         'locations': {
-            'name': os.path.join(CSV_DIR, 'works_locations.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_locations.csv'),
             'columns': [
                 'work_id', 'source_id', 'landing_page_url', 'pdf_url', 'is_oa', 'version', 'license'
             ]
         },
         'best_oa_locations': {
-            'name': os.path.join(CSV_DIR, 'works_best_oa_locations.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_best_oa_locations.csv'),
             'columns': [
                 'work_id', 'source_id', 'landing_page_url', 'pdf_url', 'is_oa', 'version', 'license'
             ]
         },
         'authorships': {
-            'name': os.path.join(CSV_DIR, 'works_authorships.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_authorships.csv'),
             'columns': [
                 'work_id', 'author_position', 'author_id', 'institution_id', 'raw_affiliation_string'
             ]
         },
         'biblio': {
-            'name': os.path.join(CSV_DIR, 'works_biblio.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_biblio.csv'),
             'columns': [
                 'work_id', 'volume', 'issue', 'first_page', 'last_page'
             ]
         },
         'concepts': {
-            'name': os.path.join(CSV_DIR, 'works_concepts.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_concepts.csv'),
             'columns': [
                 'work_id', 'concept_id', 'score'
             ]
         },
         'ids': {
-            'name': os.path.join(CSV_DIR, 'works_ids.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_ids.csv'),
             'columns': [
                 'work_id', 'openalex', 'doi', 'mag', 'pmid', 'pmcid'
             ]
         },
         'mesh': {
-            'name': os.path.join(CSV_DIR, 'works_mesh.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_mesh.csv'),
             'columns': [
                 'work_id', 'descriptor_ui', 'descriptor_name', 'qualifier_ui', 'qualifier_name', 'is_major_topic'
             ]
         },
         'open_access': {
-            'name': os.path.join(CSV_DIR, 'works_open_access.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_open_access.csv'),
             'columns': [
                 'work_id', 'is_oa', 'oa_status', 'oa_url', 'any_repository_has_fulltext'
             ]
         },
         'referenced_works': {
-            'name': os.path.join(CSV_DIR, 'works_referenced_works.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_referenced_works.csv'),
             'columns': [
                 'work_id', 'referenced_work_id'
             ]
         },
         'related_works': {
-            'name': os.path.join(CSV_DIR, 'works_related_works.csv.gz'),
+            'name': os.path.join(CSV_DIR, 'works_related_works.csv'),
             'columns': [
                 'work_id', 'related_work_id'
             ]
@@ -475,9 +475,9 @@ def flatten_sources(inp_dir: str):
     records into a relational database).
     :return:
     """
-    with gzip.open(csv_files['sources']['sources']['name'], 'wt', encoding='utf-8') as sources_csv, \
-            gzip.open(csv_files['sources']['ids']['name'], 'wt', encoding='utf-8') as ids_csv, \
-            gzip.open(csv_files['sources']['counts_by_year']['name'], 'wt', encoding='utf-8') as counts_by_year_csv:
+    with open(csv_files['sources']['sources']['name'], 'wt', encoding='utf-8', newline='') as sources_csv, \
+            open(csv_files['sources']['ids']['name'], 'wt', encoding='utf-8', newline='') as ids_csv, \
+            open(csv_files['sources']['counts_by_year']['name'], 'wt', encoding='utf-8', newline='') as counts_by_year_csv:
 
         sources_writer = csv.DictWriter(
             sources_csv, fieldnames=csv_files['sources']['sources']['columns'], extrasaction='ignore'
@@ -495,10 +495,11 @@ def flatten_sources(inp_dir: str):
         files_done = 0
         for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r') as sources_jsonl:
+            with open(jsonl_file_name, 'r', newline='') as sources_jsonl:
                 for source_json in sources_jsonl:
                     if not source_json.strip():
                         continue
+                    source_json = source_json.strip()
 
                     source = json.loads(source_json)
 
@@ -534,18 +535,18 @@ def flatten_works(inp_dir: str):
     """
     file_spec = csv_files['works']
 
-    with gzip.open(file_spec['works']['name'], 'wt', encoding='utf-8') as works_csv, \
-            gzip.open(file_spec['primary_locations']['name'], 'wt', encoding='utf-8') as primary_locations_csv, \
-            gzip.open(file_spec['locations']['name'], 'wt', encoding='utf-8') as locations, \
-            gzip.open(file_spec['best_oa_locations']['name'], 'wt', encoding='utf-8') as best_oa_locations, \
-            gzip.open(file_spec['authorships']['name'], 'wt', encoding='utf-8') as authorships_csv, \
-            gzip.open(file_spec['biblio']['name'], 'wt', encoding='utf-8') as biblio_csv, \
-            gzip.open(file_spec['concepts']['name'], 'wt', encoding='utf-8') as concepts_csv, \
-            gzip.open(file_spec['ids']['name'], 'wt', encoding='utf-8') as ids_csv, \
-            gzip.open(file_spec['mesh']['name'], 'wt', encoding='utf-8') as mesh_csv, \
-            gzip.open(file_spec['open_access']['name'], 'wt', encoding='utf-8') as open_access_csv, \
-            gzip.open(file_spec['referenced_works']['name'], 'wt', encoding='utf-8') as referenced_works_csv, \
-            gzip.open(file_spec['related_works']['name'], 'wt', encoding='utf-8') as related_works_csv:
+    with open(file_spec['works']['name'], 'w', encoding='utf-8', newline='') as works_csv, \
+            open(file_spec['primary_locations']['name'], 'w', encoding='utf-8', newline='') as primary_locations_csv, \
+            open(file_spec['locations']['name'], 'w', encoding='utf-8', newline='') as locations, \
+            open(file_spec['best_oa_locations']['name'], 'w', encoding='utf-8', newline='') as best_oa_locations, \
+            open(file_spec['authorships']['name'], 'w', encoding='utf-8', newline='') as authorships_csv, \
+            open(file_spec['biblio']['name'], 'w', encoding='utf-8', newline='') as biblio_csv, \
+            open(file_spec['concepts']['name'], 'w', encoding='utf-8', newline='') as concepts_csv, \
+            open(file_spec['ids']['name'], 'w', encoding='utf-8', newline='') as ids_csv, \
+            open(file_spec['mesh']['name'], 'w', encoding='utf-8', newline='') as mesh_csv, \
+            open(file_spec['open_access']['name'], 'w', encoding='utf-8', newline='') as open_access_csv, \
+            open(file_spec['referenced_works']['name'], 'w', encoding='utf-8', newline='') as referenced_works_csv, \
+            open(file_spec['related_works']['name'], 'w', encoding='utf-8', newline='') as related_works_csv:
 
         works_writer = init_dict_writer(works_csv, file_spec['works'], extrasaction='ignore')
         primary_locations_writer = init_dict_writer(primary_locations_csv, file_spec['primary_locations'])
@@ -563,11 +564,12 @@ def flatten_works(inp_dir: str):
         files_done = 0
         for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r') as works_jsonl:
+            with open(jsonl_file_name, 'r', newline='') as works_jsonl:
                 for work_json in works_jsonl:
                     if not work_json.strip():
                         continue
 
+                    work_json = work_json.strip()
                     work = json.loads(work_json)
 
                     if not (work_id := work.get('id')):
