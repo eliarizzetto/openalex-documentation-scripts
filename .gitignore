@@ -1,3 +1,4 @@
 /.idea
 flatten-openalex-jsonl-archive-copy.py
 copy-openalex-csv-archive-copy.sql
+decompress_gzip_csv_files.py
