@@ -493,7 +493,7 @@ def flatten_sources(inp_dir: str):
         seen_source_ids = set()
 
         files_done = 0
-        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.json'))):
             print(jsonl_file_name)
             with open(jsonl_file_name, 'r', newline='') as sources_jsonl:
                 for source_json in sources_jsonl:
@@ -562,7 +562,7 @@ def flatten_works(inp_dir: str):
         related_works_writer = init_dict_writer(related_works_csv, file_spec['related_works'])
 
         files_done = 0
-        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.part'))): # todo adapt this to read also (or even only) jsonl files, instead of just .part files, after eliminating the process with Dask
+        for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.json'))):
             print(jsonl_file_name)
             with open(jsonl_file_name, 'r', newline='') as works_jsonl:
                 for work_json in works_jsonl:
