@@ -28,7 +28,7 @@
 
 --sources
 
-\copy openalex.sources (id, issn_l, issn, display_name, publisher, works_count, cited_by_count, is_oa, is_in_doaj, homepage_url, works_api_url, updated_date) from 'mm-full-records-csv-files/sources.csv' csv header
+\copy openalex.sources (id, issn_l, issn, display_name, publisher, works_count, cited_by_count, is_oa, is_in_doaj, homepage_url, works_api_url, updated_date, type) from 'mm-full-records-csv-files/sources.csv' csv header
 \copy openalex.sources_ids (source_id, openalex, issn_l, issn, mag, wikidata, fatcat) from 'mm-full-records-csv-files/sources_ids.csv' csv header
 \copy openalex.sources_counts_by_year (source_id, year, works_count, cited_by_count, oa_works_count) from 'mm-full-records-csv-files/sources_counts_by_year.csv' csv header
 
