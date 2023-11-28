@@ -495,7 +495,7 @@ def flatten_sources(inp_dir: str):
         files_done = 0
         for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.json'))):
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r', newline='') as sources_jsonl:
+            with open(jsonl_file_name, 'r', newline='', encoding='utf-8') as sources_jsonl:
                 for source_json in sources_jsonl:
                     if not source_json.strip():
                         continue
@@ -564,7 +564,7 @@ def flatten_works(inp_dir: str):
         files_done = 0
         for jsonl_file_name in tqdm(glob.glob(os.path.join(inp_dir, '*.json'))):
             print(jsonl_file_name)
-            with open(jsonl_file_name, 'r', newline='') as works_jsonl:
+            with open(jsonl_file_name, 'r', newline='', encoding='utf-8') as works_jsonl:
                 for work_json in works_jsonl:
                     if not work_json.strip():
                         continue

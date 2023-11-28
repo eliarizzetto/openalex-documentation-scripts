@@ -2,3 +2,4 @@
 flatten-openalex-jsonl-archive-copy.py
 copy-openalex-csv-archive-copy.sql
 decompress_gzip_csv_files.py
+__pycache__/flatten-openalex-jsonl.cpython-39.pyc
