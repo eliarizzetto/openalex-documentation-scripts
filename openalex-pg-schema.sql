@@ -87,8 +87,7 @@ CREATE TABLE openalex.concepts (
     image_url text,
     image_thumbnail_url text,
     works_api_url text,
-    updated_date timestamp without time zone,
-    type text
+    updated_date timestamp without time zone
 );
 
 
@@ -277,7 +276,9 @@ CREATE TABLE openalex.sources (
     is_in_doaj boolean,
     homepage_url text,
     works_api_url text,
-    updated_date timestamp without time zone
+    updated_date timestamp without time zone,
+    type text
+
 );
 
 
