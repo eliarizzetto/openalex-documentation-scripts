@@ -470,7 +470,7 @@ def flatten_publishers():
 
 def flatten_sources(inp_dir: str):
     """
-    Modified to read non-compressed (.part) files in a flat directory, instead of compressed files in a directory tree.
+    Modified to read non-compressed (.json) files in a flat directory, instead of compressed files in a directory tree.
     :param inp_dir: the directory storing the file to be flattened (used for inserting multi-mapped OpenAlex full
     records into a relational database).
     :return:
