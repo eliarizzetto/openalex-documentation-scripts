@@ -1,7 +1,4 @@
 -- Schema creation
--- CREATE SCHEMA IF NOT EXISTS openalex;   -- command SCHEMA is not supported by SQLite
-
-
 
 -- Table: authors
 CREATE TABLE IF NOT EXISTS authors (
